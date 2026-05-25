@@ -1,0 +1,20 @@
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+async function testFetch() {
+  const { data, error } = await supabase
+    .from('daily_drops')
+    .select('*')
+    .order('release_date', { ascending: false })
+    .limit(1)
+    .single();
+
+  console.log("Data:", data);
+  console.log("Error:", error);
+}
+
+testFetch();
