@@ -514,7 +514,10 @@ export default function DailyFeed() {
                     setIsSyncing(true);
                     setAuthError('');
                     try {
-                      await supabase.auth.signInWithOAuth({ provider: 'discord' });
+                      await supabase.auth.signInWithOAuth({ 
+                        provider: 'discord',
+                        options: { redirectTo: window.location.origin }
+                      });
                     } catch (e) {
                       setAuthError(e.message || 'Quantum handshake failure.');
                       setIsSyncing(false);
