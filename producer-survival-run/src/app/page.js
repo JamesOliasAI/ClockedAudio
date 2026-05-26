@@ -435,12 +435,21 @@ export default function Home() {
           user_id: user.id,
           daily_drop_id: activeDrop.id
         }).select('created_at').single();
+        
+        if (error) {
+          console.error('Supabase Insert Error:', error);
+          setAuthError(`Database rejected session: ${error.message} (Check your Supabase RLS policies!)`);
+          return; // Stop here, do not let them into the arena!
+        }
+        
         if (data && data.created_at) {
           createdTime = data.created_at;
         }
       }
     } catch (err) {
       console.error('Failed to record attempt:', err);
+      setAuthError(`Failed to record attempt: ${err.message}`);
+      return; // Stop here!
     }
 
     setHasAttempted(true);
